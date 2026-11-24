@@ -358,4 +358,550 @@
                 <option value="Power - Panel Board Schedule">5 - Panel Board Schedule</option>
                 <option value="Power - Street Lighting">6 - Street Lighting</option>
                 <option value="Power - Earthing & Lightning">7 - Earthing &amp; Lightning</option>
-                <option value="Power
+                <option value="Power - Bulk Equipment">8 - Bulk Equipment</option>
+                <option value="Power - Infrastructure">9 - Infrastructure</option>
+                <option value="Power - Cable Routing">10 - Cable Routing</option>
+                <option value="Power - Electrical Spaces">11 - Electrical Spaces</option>
+                <option value="Power - BOQ">12 - BOQ</option>
+              </optgroup>
+              <optgroup label="ELV">
+                <option value="ELV - Fire Alarm">1 - Fire Alarm</option>
+                <option value="ELV - Structured Cabling">2 - Structured Cabling</option>
+                <option value="ELV - CCTV">3 - CCTV</option>
+                <option value="ELV - MATV / SMATV / IPTV">4 - MATV / SMATV / IPTV</option>
+                <option value="ELV - Public Address">5 - Public Address</option>
+                <option value="ELV - Voice Evacuation">6 - Voice Evacuation</option>
+                <option value="ELV - Nurse Call">7 - Nurse Call</option>
+                <option value="ELV - Parking">8 - Parking</option>
+                <option value="ELV - Audio Visual">9 - Audio Visual</option>
+                <option value="ELV - Digital Signage">10 - Digital Signage</option>
+                <option value="ELV - BMS">11 - BMS</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="field">
+            <label for="codeInput">كود / مرجع (اختياري)</label>
+            <input type="text" id="codeInput" placeholder="مثال: IEC 60364 / NFPA 72 / TIA-568" />
+          </div>
+        </div>
+        <div class="field" style="margin-bottom: 12px;">
+          <label for="bodyInput">الشرح (معناه إيه وبنعمله إزاي) *</label>
+          <textarea id="bodyInput" required placeholder="معناه إيه: ... بنعمله إزاي: ..."></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn" id="cancelAddBtn">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ المعلومة</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="controls">
+      <div class="search-row">
+        <input
+          type="search"
+          id="searchInput"
+          class="search-input"
+          placeholder="ابحث بأي كلمة في كل الأقسام (Power, ELV, Transformer, CCTV, BMS, BOQ...)"
+        />
+        <span class="search-meta" id="resultsCount"></span>
+      </div>
+      <div class="categories" id="categoryBar">
+        <button class="cat-btn active" data-cat="ALL">الكل</button>
+        <button class="cat-btn" data-cat="GROUP_POWER">كل Power (12)</button>
+        <button class="cat-btn" data-cat="GROUP_ELV">كل ELV (11)</button>
+        <button class="cat-btn" data-cat="Power - Load Estimation">1. Load Estimation</button>
+        <button class="cat-btn" data-cat="Power - Lighting Design">2. Lighting Design</button>
+        <button class="cat-btn" data-cat="Power - Small Power">3. Small Power</button>
+        <button class="cat-btn" data-cat="Power - Power for Mechanical">4. Power for Mechanical</button>
+        <button class="cat-btn" data-cat="Power - Panel Board Schedule">5. Panel Board Schedule</button>
+        <button class="cat-btn" data-cat="Power - Street Lighting">6. Street Lighting</button>
+        <button class="cat-btn" data-cat="Power - Earthing & Lightning">7. Earthing &amp; Lightning</button>
+        <button class="cat-btn" data-cat="Power - Bulk Equipment">8. Bulk Equipment</button>
+        <button class="cat-btn" data-cat="Power - Infrastructure">9. Infrastructure</button>
+        <button class="cat-btn" data-cat="Power - Cable Routing">10. Cable Routing</button>
+        <button class="cat-btn" data-cat="Power - Electrical Spaces">11. Electrical Spaces</button>
+        <button class="cat-btn" data-cat="Power - BOQ">12. BOQ</button>
+        <button class="cat-btn" data-cat="ELV - Fire Alarm">1. Fire Alarm</button>
+        <button class="cat-btn" data-cat="ELV - Structured Cabling">2. Structured Cabling</button>
+        <button class="cat-btn" data-cat="ELV - CCTV">3. CCTV</button>
+        <button class="cat-btn" data-cat="ELV - MATV / SMATV / IPTV">4. MATV/SMATV/IPTV</button>
+        <button class="cat-btn" data-cat="ELV - Public Address">5. Public Address</button>
+        <button class="cat-btn" data-cat="ELV - Voice Evacuation">6. Voice Evacuation</button>
+        <button class="cat-btn" data-cat="ELV - Nurse Call">7. Nurse Call</button>
+        <button class="cat-btn" data-cat="ELV - Parking">8. Parking</button>
+        <button class="cat-btn" data-cat="ELV - Audio Visual">9. Audio Visual</button>
+        <button class="cat-btn" data-cat="ELV - Digital Signage">10. Digital Signage</button>
+        <button class="cat-btn" data-cat="ELV - BMS">11. BMS</button>
+      </div>
+    </section>
+
+    <main class="grid" id="notesGrid"></main>
+
+    <footer dir="ltr">
+      Created &amp; curated by <strong>Mohamed Abada</strong>
+    </footer>
+  </div>
+
+  <script>
+    var STORAGE_KEY = 'elec_ref_mohamed_abada_v2';
+
+    var defaultNotes = [
+      {
+        id: 'p1',
+        group: 'POWER',
+        category: 'Power - Load Estimation',
+        code: 'IEC / NEC',
+        title: '1 - Load Estimation',
+        body: [
+          'معناه إيه: حساب إجمالي الحمل الكهربي المتوقع للمشروع لتحديد سعات المحولات والمولدات واللوحات والكابلات.',
+          'بنعمله إزاي: نحصر الأحمال حسب طبيعة الفراغ والمعدة، ونفصلها لـ Normal و Essential و UPS، ثم نطبق Demand و Diversity و Power Factor مع هامش توسع.'
+        ].join('\n')
+      },
+      {
+        id: 'p2',
+        group: 'POWER',
+        category: 'Power - Lighting Design',
+        code: 'DIALux / EN 12464',
+        title: '2 - Lighting Design',
+        body: [
+          'معناه إيه: توزيع كشافات الإنارة الداخلية والطوارئ لتحقيق مستوى إضاءة مناسب وراحة بصرية وتوفير للطاقة.',
+          'بنعمله إزاي: نحدد الـ Lux والـ UGR والـ CRI حسب نوع الفراغ، ونوزع الكشافات ونراجعها بالحسابات أو DIALux، ثم نقسم الدوائر مع مراعاة الطوارئ.'
+        ].join('\n')
+      },
+      {
+        id: 'p3',
+        group: 'POWER',
+        category: 'Power - Small Power',
+        code: 'NEC 210 / IEC 60364',
+        title: '3 - Small Power',
+        body: [
+          'معناه إيه: توفير برايز ومخارج قوى للأجهزة والمعدات الخفيفة في مختلف الفراغات.',
+          'بنعمله إزاي: نوزع البرايز حسب الفرش والاستخدام، ونعمل دوائر مستقلة للأحمال الكبيرة أو الحساسة، ونستخدم RCD/GFCI في الأماكن الرطبة.'
+        ].join('\n')
+      },
+      {
+        id: 'p4',
+        group: 'POWER',
+        category: 'Power - Power for Mechanical',
+        code: 'MEP Coordination',
+        title: '4 - Power for Mechanical',
+        body: [
+          'معناه إيه: تغذية وتشغيل وحماية معدات الميكانيكا مثل التكييف والطلمبات والمراوح والتشيلرات.',
+          'بنعمله إزاي: نراجع جدول أحمال الميكانيكا والجهد والطور وتيار البدء، ونوفر Isolator محلي قريب من المعدة، وننسق إشارات التشغيل والـ Trip.'
+        ].join('\n')
+      },
+      {
+        id: 'p5',
+        group: 'POWER',
+        category: 'Power - Panel Board Schedule',
+        code: 'IEC 61439',
+        title: '5 - Panel Board Schedule',
+        body: [
+          'معناه إيه: جدول يوضح بيانات كل دائرة في اللوحة من حمل وقاطع ومقاس كابل وهبوط جهد وتيار قصر.',
+          'بنعمله إزاي: نوازن الأحمال على الفازات الثلاث، ونحسب القاطع والكابل والـ Voltage Drop، ونترك Spare/Reserve مناسب ونكتب اسم واضح لكل دائرة.'
+        ].join('\n')
+      },
+      {
+        id: 'p6',
+        group: 'POWER',
+        category: 'Power - Street Lighting',
+        code: 'CIE / Road Standards',
+        title: '6 - Street Lighting',
+        body: [
+          'معناه إيه: إنارة الطرق والممرات والمواقف الخارجية لتأمين الرؤية والحركة ليلاً.',
+          'بنعمله إزاي: نحدد ارتفاع العمود والمسافات والقدرة حسب عرض الطريق، ونربطها بلوحة إنارة شوارع فيها Contactor و Photocell/Timer وحماية كاملة.'
+        ].join('\n')
+      },
+      {
+        id: 'p7',
+        group: 'POWER',
+        category: 'Power - Earthing & Lightning',
+        code: 'IEC 62305 / IEC 60364',
+        title: '7 - Earthing & Lightning',
+        body: [
+          'معناه إيه: حماية الأشخاص والمعدات من الصدمات الكهربية وتفريغ تيارات الأعطال والصواعق بأمان.',
+          'بنعمله إزاي: ننفذ شبكة تأريض بمقاومة منخفضة مع Equipotential Bonding، ونحدد نظام الحماية من الصواعق والـ SPD حسب تقييم المخاطر.'
+        ].join('\n')
+      },
+      {
+        id: 'p8',
+        group: 'POWER',
+        category: 'Power - Bulk Equipment',
+        code: 'IEC 60076 / IEC 60947',
+        title: '8 - Bulk Equipment',
+        body: [
+          'معناه إيه: المعدات الرئيسية في المنظومة مثل Distributor و Transformer و Generator و UPS واللوحات العمومية.',
+          'بنعمله إزاي: نحدد سعاتها وتيار القصر والتبريد والتهوية والـ Harmonics، ونراجع زمن التحويل ومدة بطاريات الـ UPS.'
+        ].join('\n')
+      },
+      {
+        id: 'p9',
+        group: 'POWER',
+        category: 'Power - Infrastructure',
+        code: 'Site & Trenching',
+        title: '9 - Infrastructure',
+        body: [
+          'معناه إيه: شبكات ومسارات الكابلات الخارجية في الموقع بين المباني والمصدر الرئيسي أو غرف الكهرباء.',
+          'بنعمله إزاي: ننسق مسارات الخنادق والـ Duct banks مع باقي الخدمات، ونراعي العمق والرمل و Warning tape وغرف التفتيش.'
+        ].join('\n')
+      },
+      {
+        id: 'p10',
+        group: 'POWER',
+        category: 'Power - Cable Routing',
+        code: 'Tray / Trunk / Conduit',
+        title: '10 - Cable Routing',
+        body: [
+          'معناه إيه: تنظيم مسارات الكابلات داخل المبنى عبر المواسير أو الترانك أو حوامل الكابلات.',
+          'بنعمله إزاي: نختار المسار المناسب ونلتزم بنسبة الملء والانحناء، ونفصل القوى عن الداتا لتقليل التداخل الكهرومغناطيسي.'
+        ].join('\n')
+      },
+      {
+        id: 'p11',
+        group: 'POWER',
+        category: 'Power - Electrical Spaces',
+        code: 'Room Sizing & Access',
+        title: '11 - Electrical Spaces',
+        body: [
+          'معناه إيه: غرف المحولات واللوحات والبطاريات والـ MDF/IDF وشروط تشغيلها وصيانتها.',
+          'بنعمله إزاي: نحدد مساحة كافية للمعدات وحركة الفنيين وفتح الأبواب للخارج، وننسق التهوية أو التكييف والصرف والطوارئ والحريق.'
+        ].join('\n')
+      },
+      {
+        id: 'p12',
+        group: 'POWER',
+        category: 'Power - BOQ',
+        code: 'Estimation & Specs',
+        title: '12 - BOQ',
+        body: [
+          'معناه إيه: جدول الكميات والمواصفات الفنية للبنود الكهربائية المستخدمة في التسعير والتوريد والتنفيذ.',
+          'بنعمله إزاي: نفرّغ الكميات من المخططات بالوحدة المناسبة، ونطابق التوصيف مع المواصفات، ونشمل الملحقات والاختبارات والتشغيل.'
+        ].join('\n')
+      },
+      {
+        id: 'e1',
+        group: 'ELV',
+        category: 'ELV - Fire Alarm',
+        code: 'NFPA 72 / EN 54',
+        title: '1 - Fire Alarm',
+        body: [
+          'معناه إيه: منظومة إنذار الحريق لاكتشاف الدخان أو الحرارة أو الكواشف اليدوية وتنبيه المتواجدين.',
+          'بنعمله إزاي: نوزع Detectors و Manual Call Points و Horns/Strobes، ونمد كابلات Fire Rated بمسارات آمنة، ونربط إشارات الفصل والتحكم.'
+        ].join('\n')
+      },
+      {
+        id: 'e2',
+        group: 'ELV',
+        category: 'ELV - Structured Cabling',
+        code: 'TIA-568 / ISO 11801',
+        title: '2 - Structured Cabling',
+        body: [
+          'معناه إيه: بنية تحتية منظمة لكابلات الداتا والاتصالات والفايبر لربط نقاط العمل والشبكات.',
+          'بنعمله إزاي: نوزع مخارج Data/Voice ونحدد Cat6 أو Cat6A والفايبر، ونلتزم بحدود الأطوال، ونرتب الـ Racks و MDF/IDF.'
+        ].join('\n')
+      },
+      {
+        id: 'e3',
+        group: 'ELV',
+        category: 'ELV - CCTV',
+        code: 'Security & Surveillance',
+        title: '3 - CCTV',
+        body: [
+          'معناه إيه: منظومة المراقبة بالكاميرات لتأمين المداخل والمخارج والممرات وتسجيل الأحداث.',
+          'بنعمله إزاي: نختار نوع الكاميرا والعدسة وزاوية الرؤية والـ IR، ونحدد مواقعها، ونحسب سعة التخزين وعدد أيام الحفظ.'
+        ].join('\n')
+      },
+      {
+        id: 'e4',
+        group: 'ELV',
+        category: 'ELV - MATV / SMATV / IPTV',
+        code: 'RF & Distribution',
+        title: '4 - MATV / SMATV / IPTV',
+        body: [
+          'معناه إيه: أنظمة توزيع القنوات التلفزيونية عبر RF/Satellite أو عبر شبكة IP داخل المبنى.',
+          'بنعمله إزاي: نحدد مكان الأطباق والـ Head-end، ونصمم شبكة التوزيع لوصول إشارة متزنة، ونوزع مخارج التلفزيون في الفراغات.'
+        ].join('\n')
+      },
+      {
+        id: 'e5',
+        group: 'ELV',
+        category: 'ELV - Public Address',
+        code: 'IEC 60849 / Sound',
+        title: '5 - Public Address',
+        body: [
+          'معناه إيه: نظام النداء العام والإذاعة الداخلية لتوجيه الرسائل والنداء داخل المبنى.',
+          'بنعمله إزاي: نختار السماعات ونوزعها لتغطية واضحة بدون تشويش، ونقسم المناطق ونحسب قدرة الـ Amplifiers.'
+        ].join('\n')
+      },
+      {
+        id: 'e6',
+        group: 'ELV',
+        category: 'ELV - Voice Evacuation',
+        code: 'EN 54-16 / NFPA 72',
+        title: '6 - Voice Evacuation',
+        body: [
+          'معناه إيه: نظام إخلاء صوتي طارئ يبث تعليمات واضحة عند حدوث حريق أو طوارئ.',
+          'بنعمله إزاي: نربطه بإنذار الحريق ليتقدم تلقائياً على أي بث عادي، ونقسم مناطق الإخلاء، ونوفر بطاريات ومراقبة للأعطال.'
+        ].join('\n')
+      },
+      {
+        id: 'e7',
+        group: 'ELV',
+        category: 'ELV - Nurse Call',
+        code: 'Healthcare ELV',
+        title: '7 - Nurse Call',
+        body: [
+          'معناه إيه: نظام استدعاء التمريض في المنشآت الطبية لطلب المساعدة بسرعة من الغرف والحمامات.',
+          'بنعمله إزاي: نوزع أزرار النداء ولمبات الإشارة فوق الأبواب، ونربطها بلوحات النداء في محطة التمريض حسب الأولوية.'
+        ].join('\n')
+      },
+      {
+        id: 'e8',
+        group: 'ELV',
+        category: 'ELV - Parking',
+        code: 'PGMS / Access',
+        title: '8 - Parking',
+        body: [
+          'معناه إيه: منظومة إدارة مواقف السيارات وتنظيم الدخول والخروج والإرشاد للمواقف المتاحة.',
+          'بنعمله إزاي: نحدد مواقع البوابات وأجهزة الدخول، وحساسات أو كاميرات رصد المواقف، ولوحات الإرشاد، وننسق الكابلات.'
+        ].join('\n')
+      },
+      {
+        id: 'e9',
+        group: 'ELV',
+        category: 'ELV - Audio Visual',
+        code: 'AV / Conferencing',
+        title: '9 - Audio Visual',
+        body: [
+          'معناه إيه: أنظمة العرض والصوت والمؤتمرات في قاعات الاجتماعات والمحاضرات.',
+          'بنعمله إزاي: نحدد أماكن الشاشات أو البروجكتور والميكروفونات والسماعات حسب الرؤية والصوت، ونوفر مخارج القوى والداتا والتحكم.'
+        ].join('\n')
+      },
+      {
+        id: 'e10',
+        group: 'ELV',
+        category: 'ELV - Digital Signage',
+        code: 'Display & Network',
+        title: '10 - Digital Signage',
+        body: [
+          'معناه إيه: شاشات عرض رقمية للإعلانات أو الجداول أو الإرشادات داخل المباني.',
+          'بنعمله إزاي: نحدد مكان الشاشة وارتفاعها وزاوية الرؤية، ونوفر مخرج باور ومخرج داتا خلف الشاشة، وننسق التثبيت والمسارات.'
+        ].join('\n')
+      },
+      {
+        id: 'e11',
+        group: 'ELV',
+        category: 'ELV - BMS',
+        code: 'BACnet / Modbus / KNX',
+        title: '11 - BMS',
+        body: [
+          'معناه إيه: نظام إدارة المباني لمراقبة وتشغيل والتحكم في التكييف والإنارة والطاقة والمعدات.',
+          'بنعمله إزاي: نحصر نقاط التحكم والمراقبة مع التخصصات، ونحدد بروتوكول الاتصال، ونوزع لوحات DDC وحساساتها مع تغذيتها.'
+        ].join('\n')
+      }
+    ];
+
+    var notes = loadNotes();
+    var activeCategory = 'ALL';
+    var searchQuery = '';
+
+    function loadNotes() {
+      try {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          var parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      return defaultNotes.slice();
+    }
+
+    function saveNotes() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function normalizeText(str) {
+      return String(str || '')
+        .toLowerCase()
+        .replace(/[إأآا]/g, 'ا')
+        .replace(/ى/g, 'ي')
+        .replace(/ة/g, 'ه')
+        .replace(/[\u064B-\u065F]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function matchesSearch(note, rawQuery) {
+      var normalizedQuery = normalizeText(rawQuery);
+      if (!normalizedQuery) return true;
+
+      var searchableBlob = normalizeText([
+        note.title,
+        note.group || '',
+        note.category,
+        note.code || '',
+        note.body
+      ].join(' '));
+
+      var tokens = normalizedQuery.split(' ');
+      for (var i = 0; i < tokens.length; i++) {
+        if (searchableBlob.indexOf(tokens[i]) === -1) return false;
+      }
+      return true;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderNotes() {
+      var grid = document.getElementById('notesGrid');
+      var countEl = document.getElementById('resultsCount');
+
+      var filtered = [];
+      for (var i = 0; i < notes.length; i++) {
+        var n = notes[i];
+        var catMatch = true;
+        if (activeCategory === 'GROUP_POWER') {
+          catMatch = n.group === 'POWER' || String(n.category).indexOf('Power') === 0;
+        } else if (activeCategory === 'GROUP_ELV') {
+          catMatch = n.group === 'ELV' || String(n.category).indexOf('ELV') === 0;
+        } else if (activeCategory !== 'ALL') {
+          catMatch = n.category === activeCategory;
+        }
+        if (catMatch && matchesSearch(n, searchQuery)) {
+          filtered.push(n);
+        }
+      }
+
+      countEl.textContent = 'عدد النتائج: ' + filtered.length + ' من أصل ' + notes.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty">لا توجد معلومات مطابقة للبحث أو التصنيف الحالي.</div>';
+        return;
+      }
+
+      var html = '';
+      for (var j = 0; j < filtered.length; j++) {
+        var item = filtered[j];
+        var copyPayload = item.title + (item.code ? ' (' + item.code + ')' : '') + '\n' + item.body;
+        html +=
+          '<article class="card">' +
+            '<div>' +
+              '<div class="card-top">' +
+                '<span class="badge">' + escapeHtml(item.category) + '</span>' +
+                (item.code ? '<span class="code-tag">' + escapeHtml(item.code) + '</span>' : '') +
+              '</div>' +
+              '<h3>' + escapeHtml(item.title) + '</h3>' +
+              '<p class="card-body" style="margin-top: 8px;">' + escapeHtml(item.body) + '</p>' +
+            '</div>' +
+            '<div class="card-footer">' +
+              '<button class="btn copy-btn" data-copy="' + escapeHtml(copyPayload) + '">نسخ</button>' +
+              '<button class="btn btn-danger delete-btn" data-id="' + escapeHtml(item.id) + '">حذف</button>' +
+            '</div>' +
+          '</article>';
+      }
+      grid.innerHTML = html;
+
+      var copyBtns = document.querySelectorAll('.copy-btn');
+      for (var c = 0; c < copyBtns.length; c++) {
+        copyBtns[c].addEventListener('click', function() {
+          var text = this.getAttribute('data-copy') || '';
+          var btnRef = this;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              var old = btnRef.textContent;
+              btnRef.textContent = 'تم النسخ';
+              setTimeout(function() { btnRef.textContent = old; }, 1200);
+            }).catch(function() {
+              alert('تعذر النسخ تلقائياً');
+            });
+          } else {
+            alert('تعذر النسخ تلقائياً');
+          }
+        });
+      }
+
+      var delBtns = document.querySelectorAll('.delete-btn');
+      for (var d = 0; d < delBtns.length; d++) {
+        delBtns[d].addEventListener('click', function() {
+          var id = this.getAttribute('data-id');
+          var nextNotes = [];
+          for (var k = 0; k < notes.length; k++) {
+            if (notes[k].id !== id) nextNotes.push(notes[k]);
+          }
+          notes = nextNotes;
+          saveNotes();
+          renderNotes();
+        });
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      searchQuery = e.target.value;
+      renderNotes();
+    });
+
+    document.getElementById('categoryBar').addEventListener('click', function(e) {
+      var btn = e.target.closest('.cat-btn');
+      if (!btn) return;
+      var allCats = document.querySelectorAll('.cat-btn');
+      for (var i = 0; i < allCats.length; i++) {
+        allCats[i].classList.remove('active');
+      }
+      btn.classList.add('active');
+      activeCategory = btn.getAttribute('data-cat');
+      renderNotes();
+    });
+
+    var addPanel = document.getElementById('addPanel');
+    document.getElementById('toggleAddBtn').addEventListener('click', function() {
+      addPanel.classList.toggle('open');
+    });
+    document.getElementById('cancelAddBtn').addEventListener('click', function() {
+      addPanel.classList.remove('open');
+    });
+
+    document.getElementById('noteForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var title = document.getElementById('titleInput').value.trim();
+      var category = document.getElementById('categoryInput').value;
+      var code = document.getElementById('codeInput').value.trim();
+      var body = document.getElementById('bodyInput').value.trim();
+      if (!title || !body) return;
+
+      notes.unshift({
+        id: 'n_' + Date.now(),
+        group: category.indexOf('ELV') === 0 ? 'ELV' : 'POWER',
+        category: category,
+        code: code,
+        body: body
+      });
+
+      saveNotes();
+      e.target.reset();
+      addPanel.classList.remove('open');
+      renderNotes();
+    });
+
+    var themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', function() {
+      document.body.classList.toggle('light');
+      themeBtn.textContent = document.body.classList.contains('light') ? 'الوضع الليلي' : 'الوضع النهاري';
+    });
+
+    renderNotes();
+  </script>
+</body>
+</html>
