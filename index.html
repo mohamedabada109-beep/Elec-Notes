@@ -5,207 +5,415 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Electrical Notes | Mohamed Abada</title>
   <style>
-    body {
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #273549;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    body.light {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #0284c7;
+      --accent-2: #16a34a;
+      --danger: #dc2626;
+      --shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: Tahoma, Arial, sans-serif;
-      background: #0f172a;
-      color: #f8fafc;
-      line-height: 1.6;
+      padding: 0;
     }
-    .wrap {
-      max-width: 1000px;
+
+    body {
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .container {
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 20px 14px 48px;
+      padding: 24px 16px 56px;
     }
-    .credit {
-      background: #1e293b;
-      border-right: 4px solid #38bdf8;
-      padding: 10px 14px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-size: 14px;
-    }
-    .top {
-      background: #1e293b;
-      padding: 16px;
+
+    .author-banner {
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.14), rgba(34, 197, 94, 0.12));
+      border: 1px solid var(--border);
+      border-right: 4px solid var(--accent);
       border-radius: 12px;
-      margin-bottom: 16px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
       display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 0.94rem;
+    }
+
+    .author-banner strong {
+      color: var(--accent);
+    }
+
+    header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
     }
-    .search-box {
-      background: #1e293b;
-      padding: 14px;
-      border-radius: 12px;
-      margin-bottom: 16px;
+
+    header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 9px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #06131e;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    .controls {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .categories {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
-    input, textarea {
-      font-family: inherit;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: #f8fafc;
-      font-size: 14px;
-    }
-    #searchInput {
-      flex: 1;
-      min-width: 200px;
-    }
-    button, a.btn {
-      font-family: inherit;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: none;
+
+    .cat-btn {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
       cursor: pointer;
-      font-size: 14px;
-      text-decoration: none;
-      display: inline-block;
+      font-size: 0.85rem;
     }
-    .btn-blue {
-      background: #38bdf8;
+
+    .cat-btn.active {
+      background: var(--accent);
       color: #06131e;
-      font-weight: bold;
+      border-color: transparent;
+      font-weight: 600;
     }
-    .btn-gray {
-      background: #334155;
-      color: #f8fafc;
-    }
-    .btn-red {
-      background: #dc2626;
-      color: #fff;
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-    #addBox {
+
+    .add-panel {
       display: none;
-      background: #1e293b;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
     }
-    #addBox.open {
+
+    .add-panel.open {
       display: block;
     }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .field input, .field select, .field textarea {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .field textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       gap: 14px;
     }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 14px;
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
     }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .code-tag {
+      font-family: Consolas, monospace;
+      font-size: 0.78rem;
+      color: var(--accent-2);
+      background: rgba(34, 197, 94, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
     .card h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-      color: #38bdf8;
+      font-size: 1.06rem;
+      margin-top: 8px;
     }
-    .card p {
-      margin: 0 0 12px;
-      font-size: 14px;
+
+    .card-body {
+      color: var(--text);
+      font-size: 0.93rem;
       white-space: pre-line;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      gap: 8px;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="credit" dir="ltr">Created &amp; curated by <strong>Mohamed Abada</strong></div>
-
-    <div class="top">
-      <h1 style="margin:0; font-size:20px;">مفكرة الهندسة الكهربية</h1>
-      <button class="btn-blue" id="openAdd">+ إضافة ملحوظة</button>
+  <div class="container">
+    <div class="author-banner" dir="ltr">
+      <div>Created &amp; curated by <strong>Mohamed Abada</strong></div>
     </div>
 
-    <div id="addBox">
-      <div style="margin-bottom:10px;">
-        <input id="noteTitle" type="text" placeholder="عنوان الملحوظة" style="width:100%;" />
+    <header>
+      <div>
+        <h1>مفكرة الهندسة الكهربية</h1>
+        <p>نوتس سريعة ومرتبة لأقسام القوى (Power) والتيار الخفيف (ELV)</p>
       </div>
-      <div style="margin-bottom:10px;">
-        <textarea id="noteText" rows="4" placeholder="اكتب الملحوظة هنا..." style="width:100%;"></textarea>
+      <div class="header-actions">
+        <button class="btn btn-primary" id="toggleAddBtn">+ إضافة ملحوظة</button>
+        <button class="btn" id="themeBtn">الوضع النهاري</button>
       </div>
-      <button class="btn-blue" id="saveNote">حفظ</button>
-      <button class="btn-gray" id="cancelNote">إلغاء</button>
-    </div>
+    </header>
 
-    <div class="search-box">
-      <input id="searchInput" type="search" placeholder="ابحث في ملاحظاتك أو اكتب أي موضوع للبحث عنه في Google..." />
-      <a class="btn btn-gray" id="googleSearch" href="https://www.google.com/search?q=electrical+engineering" target="_blank" rel="noopener noreferrer">بحث Google</a>
-    </div>
-
-    <div class="grid" id="notesList"></div>
-  </div>
-
-  <script>
-    const KEY = "mohamed_abada_simple_notes_v1";
-    const initial = [
-      { id: 1, title: "توزيع البرايز (NEC)", text: "أقصى مسافة لأي نقطة على الحائط من أقرب بريزة 1.8 م، وبين كل بريزتين حوالي 3.65 م مع مراعاة الأبواب والفرش." },
-      { id: 2, title: "كابل CAT6A F/FTP vs S/FTP", text: "F/FTP: فويل لكل زوج + فويل خارجي عام. S/FTP: فويل لكل زوج + شبكة مضفورة (Braid) خارجية." },
-      { id: 3, title: "بوندنج لوحة LCP", text: "لا يُفضل مد بوندنج لمسافة طويلة من غرفة التيار الخفيف للوحة LCP بعيدة؛ الأفضل الاعتماد على PE المغذي أو أقرب بارة تأريض." }
-    ];
-
-    let items = JSON.parse(localStorage.getItem(KEY) || "null") || initial;
-
-    function save() {
-      localStorage.setItem(KEY, JSON.stringify(items));
-    }
-
-    function draw() {
-      const q = document.getElementById("searchInput").value.trim().toLowerCase();
-      document.getElementById("googleSearch").href =
-        "https://www.google.com/search?q=" + encodeURIComponent(q || "electrical engineering");
-
-      const list = document.getElementById("notesList");
-      const filtered = items.filter(x => !q || x.title.toLowerCase().includes(q) || x.text.toLowerCase().includes(q));
-
-      if (!filtered.length) {
-        list.innerHTML = '<div class="card"><p>مفيش ملحوظة مطابقة هنا، جرب تدوس "بحث Google" للبحث عن الموضوع بره.</p></div>';
-        return;
-      }
-
-      list.innerHTML = filtered.map(x => `
-        <div class="card">
-          <h3>${x.title}</h3>
-          <p>${x.text}</p>
-          <button class="btn-red" onclick="removeNote(${x.id})">حذف</button>
+    <section class="add-panel" id="addPanel">
+      <h2 style="font-size: 1.15rem; margin-bottom: 12px;">إضافة ملحوظة جديدة</h2>
+      <form id="noteForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="titleInput">عنوان الملحوظة *</label>
+            <input type="text" id="titleInput" required placeholder="مثال: معامل التنوع أو ارتفاع كاميرا" />
+          </div>
+          <div class="field">
+            <label for="categoryInput">التصنيف *</label>
+            <select id="categoryInput">
+              <optgroup label="Power">
+                <option value="Power - Load Estimation">1 - Load Estimation</option>
+                <option value="Power - Lighting Design">2 - Lighting Design</option>
+                <option value="Power - Small Power">3 - Small Power</option>
+                <option value="Power - Power for Mechanical">4 - Power for Mechanical</option>
+                <option value="Power - Panel Board Schedule">5 - Panel Board Schedule</option>
+                <option value="Power - Street Lighting">6 - Street Lighting</option>
+                <option value="Power - Earthing & Lightning">7 - Earthing &amp; Lightning</option>
+                <option value="Power - Bulk Equipment">8 - Bulk Equipment</option>
+                <option value="Power - Infrastructure">9 - Infrastructure</option>
+                <option value="Power - Cable Routing">10 - Cable Routing</option>
+                <option value="Power - Electrical Spaces">11 - Electrical Spaces</option>
+                <option value="Power - BOQ">12 - BOQ</option>
+              </optgroup>
+              <optgroup label="ELV">
+                <option value="ELV - Fire Alarm">1 - Fire Alarm</option>
+                <option value="ELV - Structured Cabling">2 - Structured Cabling</option>
+                <option value="ELV - CCTV">3 - CCTV</option>
+                <option value="ELV - MATV / SMATV / IPTV">4 - MATV / SMATV / IPTV</option>
+                <option value="ELV - Public Address">5 - Public Address</option>
+                <option value="ELV - Voice Evacuation">6 - Voice Evacuation</option>
+                <option value="ELV - Nurse Call">7 - Nurse Call</option>
+                <option value="ELV - Parking">8 - Parking</option>
+                <option value="ELV - Audio Visual">9 - Audio Visual</option>
+                <option value="ELV - Digital Signage">10 - Digital Signage</option>
+                <option value="ELV - BMS">11 - BMS</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="field">
+            <label for="codeInput">كود / مرجع (اختياري)</label>
+            <input type="text" id="codeInput" placeholder="مثال: IEC 60364 / NFPA 72 / TIA-568" />
+          </div>
         </div>
-      `).join("");
-    }
+        <div class="field" style="margin-bottom: 12px;">
+          <label for="bodyInput">نص الملحوظة *</label>
+          <textarea id="bodyInput" required placeholder="اكتب التفاصيل الهندسية هنا..."></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn" id="cancelAddBtn">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ الملحوظة</button>
+        </div>
+      </form>
+    </section>
 
-    window.removeNote = function(id) {
-      items = items.filter(x => x.id !== id);
-      save();
-      draw();
-    };
-
-    document.getElementById("openAdd").onclick = () => {
-      document.getElementById("addBox").classList.toggle("open");
-    };
-    document.getElementById("cancelNote").onclick = () => {
-      document.getElementById("addBox").classList.remove("open");
-    };
-    document.getElementById("saveNote").onclick = () => {
-      const title = document.getElementById("noteTitle").value.trim();
-      const text = document.getElementById("noteText").value.trim();
-      if (!title || !text) return;
-      items.unshift({ id: Date.now(), title, text });
-      save();
-      document.getElementById("noteTitle").value = "";
-      document.getElementById("noteText").value = "";
-      document.getElementById("addBox").classList.remove("open");
-      draw();
-    };
-    document.getElementById("searchInput").oninput = draw;
-
-    draw();
-  </script>
-</body>
-</html>
+    <section class="controls">
+      <div class="search-row">
+        <input
+          type="search"
+          id="searchInput"
+          class="search-input"
+          placeholder="ابحث بأي كلمة في كل الأقسام (Power, ELV, Transformer, CCTV, BMS, BOQ...)"
+        />
+        <span class="search-meta" id="resultsCount"></span>
+      </div>
+      <div class="categories" id="categoryBar">
+        <button class="cat-btn active" data-cat="ALL">الكل</button>
+        <button class="cat-btn" data-cat="GROUP_POWER">كل Power (12)</button>
+        <button class="cat-btn" data-cat="GROUP_ELV">كل ELV (11)</button>
+        <button class="cat-btn" data-cat="Power - Load Estimation">1. Load Estimation</button>
+        <button class="cat-btn" data-cat="Power - Lighting Design">2. Lighting Design</button>
+        <button class="cat-btn" data-cat="Power - Small Power">3. Small Power</button>
+        <button class="cat-btn" data-cat="Power - Power for Mechanical">4. Power for Mechanical</button>
+        <button class="cat-btn" data-cat="Power - Panel Board Schedule">5. Panel Board Schedule</button>
+        <button class="cat-btn" data-cat="Power - Street Lighting">6. Street Lighting</button>
+        <button class="cat-btn" data-cat="Power - Earthing & Lightning">7. Earthing &amp; Lightning</button>
+        <button
