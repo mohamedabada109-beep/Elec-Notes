@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مفكرة الهندسة الكهربية | Electrical Engineering Notes</title>
+  <!-- استدعاء خطوط Cairo للعربية و Inter للإنجليزية و JetBrains Mono للأكواد -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* تحسينات بصرية وتنسيقات عامة */
+    body {
+      font-family: 'Cairo', 'Inter', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .eng-term {
+      font-family: 'Inter', sans-serif;
+      direction: ltr;
+      display: inline-block;
+    }
+    .code-badge {
+      font-family: 'JetBrains Mono', monospace;
+      direction: ltr;
+    }
+    /* شريط تمرير أنيق */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col">
+
+  <!-- الشريط العلوي (Navbar) -->
+  <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- الشعار والعنوان -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <!-- أيقونة هندسية (برق / دائرة كهربية) -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+            مفكرة الهندسة الكهربية
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-medium eng-term">
+            MEP & Electrical Quick Reference Notes
+          </p>
+        </div>
+      </div>
+
+      <!-- أزرار التحكم (إضافة ملحوظة + الوضع الليلي + استعادة الافتراضي) -->
+      <div class="flex items-center gap-2.5">
+        <button id="openModalBtn" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm transition cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>إضافة ملحوظة</span>
+        </button>
+
+        <button id="themeToggleBtn" title="تبديل الوضع الليلي / النهاري" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition cursor-pointer">
+          <!-- أيقونة الشمس -->
+          <svg id="sunIcon" class="w-5 h-5 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- أيقونة القمر -->
+          <svg id="moonIcon" class="w-5 h-5 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- قسم البحث والإحصائيات السريعة -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm mb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- مربع البحث الفوري -->
+        <div class="relative flex-1">
+          <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="ابحث في الملحوظات (مثال: NEC, CAT6A, Earthing, Voltage Drop, البرايز)..."
+            class="w-full pr-11 pl-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          />
+        </div>
+
+        <!-- عداد الملحوظات وزر إعادة الضبط -->
+        <div class="flex items-center justify-between md:justify-end gap-3 text-sm">
+          <span class="px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 font-bold border border-blue-100 dark:border-blue-900/60">
+            عدد الملحوظات: <span id="notesCount">0</span>
+          </span>
+          <button id="resetNotesBtn" title="استعادة الملحوظات الافتراضية" class="px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+            استعادة الافتراضي
+          </button>
+        </div>
+      </div>
+
+      <!-- أزرار تصفية الأقسام (Category Filter Tabs) -->
+      <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 pb-1">
+        <!-- يتم توليد الأزرار ديناميكياً عبر JS -->
+      </div>
+    </div>
+
+    <!-- شبكة عرض الملحوظات (Notes Grid) -->
+    <div id="notesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- يتم حقن البطاقات هنا عبر JavaScript -->
+    </div>
+
+    <!-- رسالة في حالة عدم وجود نتائج -->
+    <div id="emptyState" class="hidden text-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200">لا توجد ملحوظات مطابقة لبحثك</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">جرب البحث بكلمة أخرى أو أضف ملحوظة جديدة للقسم.</p>
+    </div>
+
+  </main>
+
+  <!-- نافذة إضافة ملحوظة جديدة (Modal) -->
+  <div id="noteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">إضافة ملحوظة هندسية جديدة</h2>
+        <button id="closeModalBtn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="noteForm" class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300">عنوان الملحوظة *</label>
+          <input type="text" id="noteTitle" required placeholder="مثال: حسابات هبوط الجهد Voltage Drop" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300">القسم *</label>
+            <select id="noteCategory" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="power">توزيع القوى (Power Distribution)</option>
+              <option value="low-current">التيار الخفيف (Low Current)</option>
+              <option value="earthing">التأريض (Earthing & Bonding)</option>
+              <option value="lighting">الإضاءة (Lighting & DIALux)</option>
+              <option value="codes">الأكواد والمعايير (Codes & Standards)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300">الكود / المرجع (Tag)</label>
+            <input type="text" id="noteTag" placeholder="مثال: IEC 60364 / NEC 210" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm code-badge focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300">تفاصيل الملحوظة *</label>
+          <textarea id="noteContent" rows="4" required placeholder="اكتب الشرح الفني أو القاعدة الهندسية هنا..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2.5">
+          <button type="button" id="cancelModalBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+            إلغاء
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition cursor-pointer">
+            حفظ الملحوظة
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- إشعار منبثق (Toast Notification) -->
+  <div id="toast" class="fixed bottom-5 left-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-slate-800 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    <span id="toastMessage">تم النسخ بنجاح</span>
+  </div>
+
+  <!-- التذييل (Footer) -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-5 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+      <p>مفكرة الهندسة الكهربية — مرجع هندسي سريع للتصميم والتنفيذ (<span class="eng-term">MEP / Electrical</span>)</p>
+      <p>يتم حفظ إضافاتك تلقائياً على متصفحك (<span class="eng-term">Local Storage</span>)</p>
+    </div>
+  </footer>
+
+  <!-- المنطق البرمجي (JavaScript) -->
+  <script>
+    // تعريف الأقسام وألوانها
+    const CATEGORIES = [
+      { id: 'all', label: 'الكل', en: 'All' },
+      { id: 'power', label: 'توزيع القوى', en: 'Power', badgeClass: 'bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300 border-amber-200 dark:border-amber-800/60' },
+      { id: 'low-current', label: 'التيار الخفيف', en: 'Low Current', badgeClass: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950/70 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800/60' },
+      { id: 'earthing', label: 'التأريض', en: 'Earthing', badgeClass: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60' },
+      { id: 'lighting', label: 'الإضاءة', en: 'Lighting', badgeClass: 'bg-purple-100 text-purple-800 dark:bg-purple-950/70 dark:text-purple-300 border-purple-200 dark:border-purple-800/60' },
+      { id: 'codes', label: 'الأكواد والمعايير', en: 'Codes', badgeClass: 'bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300 border-rose-200 dark:border-rose-800/60' }
+    ];
+
+    // الملحوظات الهندسية الافتراضية
+    const DEFAULT_NOTES = [
+      {
+        id: 'note-1',
+        title: 'توزيع البرايز على الحوائط (بدون فرش)',
+        category: 'power',
+        tag: 'NEC 210.52',
+        content: 'في حالة عدم وجود فرش معماري محدد: أقصى مسافة لأي نقطة على الحائط عن أقرب مخرج هي 1.8 متر (6 ft)، وبالتالي أقصى مسافة بين كل مخرجين متتاليين على نفس الحائط هي 3.65 متر (12 ft). تُقاس المسافة أفقياً على الأجزاء السليمة من الحائط وتنقطع عند الأبواب والفتحات.'
+      },
+      {
+        id: 'note-2',
+        title: 'الفرق بين كابلات CAT6A F/FTP و S/FTP',
+        category: 'low-current',
+        tag: 'ISO/IEC 11801',
+        content: 'في F/FTP (Foiled/Foiled Twisted Pair) يكون كل زوج مغلف بطبقة Foil مستقلة بالإضافة لغلاف Foil عام تحت الجاكيت الخارجي. أما في S/FTP (Screened/Foiled) فيكون الغلاف العام شبكة معدنية مضفورة (Braid) مع Foil لكل زوج. كلاهما ممتاز لتقليل الـ Alien Crosstalk في أنظمة Digital Signage والداتا عالية السرعة 10Gbps.'
+      },
+      {
+        id: 'note-3',
+        title: 'الربط المتساوي الجهد (Equipotential Bonding)',
+        category: 'earthing',
+        tag: 'TIA-607 / IEC 60364',
+        content: 'يجب ربط بارة التأريض في غرف التيار الخفيف (TGB) بشبكة التأريض الرئيسية للمبنى (MET / TMGB) لضمان تساوي الجهد ومنع الـ Ground Loops. اللوحات القريبة أو داخل الغرفة يمكن ربطها بـ TGB، بينما اللوحات البعيدة تُؤرض من مصدر تغذيتها أو أقرب بارة تأريض محلية لتجنب الهدر والـ Noise.'
+      },
+      {
+        id: 'note-4',
+        title: 'الحدود المسموحة لهبوط الجهد (Voltage Drop)',
+        category: 'codes',
+        tag: 'IEC 60364-5-52',
+        content: 'طبقاً لكود IEC 60364: أقصى هبوط جهد مسموح به من نقطة التغذية العمومية (Origin) حتى أبعد حمل هو 3% لدوائر الإنارة (Lighting) و 5% لدوائر القوى والأحمال الأخرى (Other Uses). في حالة وجود محول خاص بالمبنى، تزيد النسب المسموحة بمقدار 3% إضافية.'
+      },
+      {
+        id: 'note-5',
+        title: 'تغذية شاشات Digital Signage في المستشفيات',
+        category: 'low-current',
+        tag: 'ELV Coordination',
+        content: 'كل شاشة عرض إرشادية تحتاج مخرج باور Socket 220V (يفضل من لوحة UPS/Emergency للشاشات الإرشادية) + مخرج داتا RJ45 (CAT6A) واصل لأقرب سويتش في غرفة IDF. يُراعى وضع المخارج خلف جسم الشاشة مباشرة بالتنسيق مع الارتفاع المعماري.'
+      },
+      {
+        id: 'note-6',
+        title: 'ملاحظة المطبخ والمناطق التخصصية (Kitchen Note)',
+        category: 'power',
+        tag: 'Shop Drawings',
+        content: 'في مناطق المطابخ أو المعامل الطبية: تُوضع ملحوظة صريحة على اللوحة بأن مواقع المخارج وقدراتها استرشادية فقط، ويتم التنفيذ النهائي طبقاً للمخططات التنفيذية المعتمدة لمورد المعدات (Specialist Vendor Approved Shop Drawings) قبل أعمال التأسيس.'
+      },
+      {
+        id: 'note-7',
+        title: 'درجات الحماية IP Ratings الشائعة',
+        category: 'lighting',
+        tag: 'IEC 60529',
+        content: '• IP20: للاستخدام الداخلي الجاف (المكاتب والغرف).\n• IP44: للحمامات والأماكن المعرضة لرذاذ خفيف.\n• IP54 / IP55: لغرف الميكانيكا والورش (حماية من الأتربة ورذاذ الماء).\n• IP65 / IP66: للاستخدام الخارجي (Outdoor) وواجهات المباني ومواقف السيارات.'
+      },
+      {
+        id: 'note-8',
+        title: 'تحسين معامل القدرة (Power Factor Correction)',
+        category: 'power',
+        tag: 'PF > 0.95',
+        content: 'الهدف رفع معامل القدرة الكلي للمبنى إلى 0.95 أو أعلى لتقليل القدرة غير الفعالة (kVAR) وتفادي غرامات شركة الكهرباء وتخفيف الحمل على الكابلات والمحولات. تُركب لوحات المكثفات (Capacitor Banks) مع Detuned Reactors في حال وجود أحمال ذات Harmonics عالية (مثل VFD و UPS).'
+      }
+    ];
+
+    // حالة التطبيق
+    let notes = [];
+    let currentCategory = 'all';
+    let searchQuery = '';
+
+    // عناصر DOM
+    const notesGrid = document.getElementById('notesGrid');
+    const emptyState = document.getElementById('emptyState');
+    const notesCount = document.getElementById('notesCount');
+    const categoryTabs = document.getElementById('categoryTabs');
+    const searchInput = document.getElementById('searchInput');
+    const noteModal = document.getElementById('noteModal');
+    const noteForm = document.getElementById('noteForm');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+
+    // تهيئة الوضع الليلي
+    function initTheme() {
+      const savedTheme = localStorage.getItem('ee_notes_theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('ee_notes_theme', isDark ? 'dark' : 'light');
+    });
+
+    // تحميل الملحوظات من LocalStorage
+    function loadNotes() {
+      const stored = localStorage.getItem('ee_notes_data');
+      if (stored) {
+        try {
+          notes = JSON.parse(stored);
+        } catch (e) {
+          notes = [...DEFAULT_NOTES];
+        }
+      } else {
+        notes = [...DEFAULT_NOTES];
+        saveNotes();
+      }
+    }
+
+    function saveNotes() {
+      localStorage.setItem('ee_notes_data', JSON.stringify(notes));
+    }
+
+    // عرض إشعار Toast
+    let toastTimeout;
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2600);
+    }
+
+    // نسخ النص للحافظة بطريقة متوافقة
+    function copyTextToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('تم نسخ الملحوظة إلى الحافظة');
+      } catch (err) {
+        showToast('تعذر النسخ، حاول مرة أخرى');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // رسم أزرار الأقسام
+    function renderTabs() {
+      categoryTabs.innerHTML = CATEGORIES.map(cat => {
+        const isActive = currentCategory === cat.id;
+        const activeClasses = isActive
+          ? 'bg-blue-600 text-white shadow-sm border-blue-600'
+          : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-transparent hover:bg-slate-200 dark:hover:bg-slate-700';
+
+        return `
+          <button
+            onclick="setCategory('${cat.id}')"
+            class="whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition cursor-pointer ${activeClasses}"
+          >
+            ${cat.label}
+          </button>
+        `;
+      }).join('');
+    }
+
+    window.setCategory = function(catId) {
+      currentCategory = catId;
+      renderTabs();
+      renderNotes();
+    };
+
+    // رسم بطاقات الملحوظات
+    function renderNotes() {
+      const q = searchQuery.trim().toLowerCase();
+
+      const filtered = notes.filter(note => {
+        const matchesCat = currentCategory === 'all' || note.category === currentCategory;
+        const matchesSearch =
+          !q ||
+          note.title.toLowerCase().includes(q) ||
+          note.content.toLowerCase().includes(q) ||
+          (note.tag && note.tag.toLowerCase().includes(q));
+        return matchesCat && matchesSearch;
+      });
+
+      notesCount.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        notesGrid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      notesGrid.innerHTML = filtered.map(note => {
+        const catObj = CATEGORIES.find(c => c.id === note.category) || CATEGORIES[1];
+        const badgeStyle = catObj.badgeClass || 'bg-slate-100 text-slate-700';
+
+        return `
+          <article class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-600 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <!-- رأس البطاقة: القسم والكود -->
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-xs font-bold px-2.5 py-1 rounded-lg border ${badgeStyle}">
+                  ${catObj.label}
+                </span>
+                ${note.tag ? `<span class="code-badge text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">${escapeHtml(note.tag)}</span>` : ''}
+              </div>
+
+              <!-- عنوان الملحوظة -->
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mb-2.5 leading-snug">
+                ${escapeHtml(note.title)}
+              </h3>
+
+              <!-- محتوى الملحوظة -->
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                ${escapeHtml(note.content)}
+              </p>
+            </div>
+
+            <!-- شريط الإجراءات السفلي -->
+            <div class="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+              <button
+                onclick="handleCopyNote('${note.id}')"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 py-1 px-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition cursor-pointer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>نسخ النص</span>
+              </button>
+
+              <button
+                onclick="handleDeleteNote('${note.id}')"
+                title="حذف الملحوظة"
+                class="inline-flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 py-1 px-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <span>حذف</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // حماية النصوص من حقن HTML
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // نسخ ملحوظة
+    window.handleCopyNote = function(id) {
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+      const formatted = `${note.title}${note.tag ? ` [${note.tag}]` : ''}\n${note.content}`;
+      copyTextToClipboard(formatted);
+    };
+
+    // حذف ملحوظة
+    window.handleDeleteNote = function(id) {
+      notes = notes.filter(n => n.id !== id);
+      saveNotes();
+      renderNotes();
+      showToast('تم حذف الملحوظة');
+    };
+
+    // البحث الفوري
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderNotes();
+    });
+
+    // التحكم في نافذة الإضافة (Modal)
+    function openModal() {
+      noteModal.classList.remove('hidden');
+      noteModal.classList.add('flex');
+      document.getElementById('noteTitle').focus();
+    }
+
+    function closeModal() {
+      noteModal.classList.add('hidden');
+      noteModal.classList.remove('flex');
+      noteForm.reset();
+    }
+
+    document.getElementById('openModalBtn').addEventListener('click', openModal);
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('cancelModalBtn').addEventListener('click', closeModal);
+
+    noteModal.addEventListener('click', (e) => {
+      if (e.target === noteModal) closeModal();
+    });
+
+    // حفظ ملحوظة جديدة
+    noteForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('noteTitle').value.trim();
+      const category = document.getElementById('noteCategory').value;
+      const tag = document.getElementById('noteTag').value.trim();
+      const content = document.getElementById('noteContent').value.trim();
+
+      if (!title || !content) return;
+
+      const newNote = {
+        id: 'note-' + Date.now(),
+        title,
+        category,
+        tag,
+        content
+      };
+
+      notes.unshift(newNote);
+      saveNotes();
+      currentCategory = 'all';
+      renderTabs();
+      renderNotes();
+      closeModal();
+      showToast('تمت إضافة الملحوظة بنجاح');
+    });
+
+    // استعادة الملحوظات الافتراضية
+    document.getElementById('resetNotesBtn').addEventListener('click', () => {
+      notes = [...DEFAULT_NOTES];
+      saveNotes();
+      currentCategory = 'all';
+      searchQuery = '';
+      searchInput.value = '';
+      renderTabs();
+      renderNotes();
+      showToast('تمت استعادة الملحوظات الافتراضية');
+    });
+
+    // التشغيل الأولي
+    initTheme();
+    loadNotes();
+    renderTabs();
+    renderNotes();
+  </script>
+</body>
+</html>
