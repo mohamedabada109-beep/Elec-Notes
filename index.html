@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مفكرة الهندسة الكهربية | Electrical Engineering Notes</title>
+  <title>مفكرة ومحرك بحث الهندسة الكهربية | Mohamed Abada</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -14,6 +14,7 @@
       --border: #334155;
       --accent: #38bdf8;
       --accent-2: #22c55e;
+      --warning: #f59e0b;
       --danger: #ef4444;
       --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     }
@@ -27,6 +28,7 @@
       --border: #cbd5e1;
       --accent: #0284c7;
       --accent-2: #16a34a;
+      --warning: #d97706;
       --danger: #dc2626;
       --shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
     }
@@ -46,7 +48,7 @@
     }
 
     .container {
-      max-width: 1120px;
+      max-width: 1140px;
       margin: 0 auto;
       padding: 24px 16px 56px;
     }
@@ -113,6 +115,10 @@
       border-radius: 10px;
       cursor: pointer;
       transition: 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .btn:hover {
@@ -124,6 +130,13 @@
       background: var(--accent);
       color: #06131e;
       border-color: transparent;
+      font-weight: 600;
+    }
+
+    .btn-accent-2 {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-2);
+      border-color: rgba(34, 197, 94, 0.35);
       font-weight: 600;
     }
 
@@ -142,6 +155,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      box-shadow: var(--shadow);
     }
 
     .search-row {
@@ -153,7 +167,7 @@
 
     .search-input {
       flex: 1;
-      min-width: 220px;
+      min-width: 240px;
       padding: 11px 14px;
       border-radius: 10px;
       border: 1px solid var(--border);
@@ -169,6 +183,17 @@
     .search-meta {
       color: var(--muted);
       font-size: 0.9rem;
+    }
+
+    .external-search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.88rem;
+      color: var(--muted);
     }
 
     .categories {
@@ -192,6 +217,41 @@
       color: #06131e;
       border-color: transparent;
       font-weight: 600;
+    }
+
+    .lookup-box {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: 4px solid var(--warning);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .lookup-box.show {
+      display: block;
+    }
+
+    .lookup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lookup-title {
+      font-weight: 700;
+      color: var(--warning);
+      font-size: 1rem;
+    }
+
+    .lookup-text {
+      font-size: 0.94rem;
+      color: var(--text);
     }
 
     .add-panel {
@@ -237,6 +297,17 @@
     .field textarea {
       min-height: 95px;
       resize: vertical;
+    }
+
+    .section-heading {
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .grid {
@@ -322,7 +393,7 @@
     .empty {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 40px 20px;
+      padding: 28px 20px;
       background: var(--surface);
       border: 1px dashed var(--border);
       border-radius: 14px;
@@ -342,307 +413,14 @@
 <body>
   <div class="container">
     <div class="author-banner">
-      <div>
-        <strong>إعداد وتجميع: محمد عباده</strong> — مرجع شخصي لملاحظات الهندسة الكهربية والأكواد والتصميم والتنفيذ.
-      </div>
+      <div>مفكرة هندسية وبحث مفتوح في علوم الهندسة الكهربية والأكواد.</div>
       <div dir="ltr">Created &amp; curated by <strong>Mohamed Abada</strong></div>
     </div>
 
     <header>
       <div>
-        <h1>مفكرة الهندسة الكهربية</h1>
-        <p>ملحوظات سريعة في القوى، التيار الخفيف، التأريض، الإضاءة، والأكواد (NEC / IEC / TIA)</p>
+        <h1>مفكرة ومحرك بحث الهندسة الكهربية</h1>
+        <p>ابحث في ملاحظاتك المحفوظة، أو استعرض المصطلحات والاختصارات، أو ابحث مفتوحاً في المصادر الخارجية</p>
       </div>
       <div class="header-actions">
-        <button class="btn btn-primary" id="toggleAddBtn">+ إضافة ملحوظة</button>
-        <button class="btn" id="themeBtn">الوضع النهاري</button>
-      </div>
-    </header>
-
-    <section class="add-panel" id="addPanel">
-      <h2 style="font-size: 1.15rem; margin-bottom: 12px;">إضافة ملحوظة جديدة</h2>
-      <form id="noteForm">
-        <div class="form-grid">
-          <div class="field">
-            <label for="titleInput">عنوان الملحوظة *</label>
-            <input type="text" id="titleInput" required placeholder="مثال: ارتفاع برايز الحمام أو توصيل Shield" />
-          </div>
-          <div class="field">
-            <label for="categoryInput">التصنيف *</label>
-            <select id="categoryInput">
-              <option value="Power">توزيع القوى (Power)</option>
-              <option value="Low Current">التيار الخفيف (Low Current)</option>
-              <option value="Earthing">التأريض والبوندنج (Earthing)</option>
-              <option value="Lighting">الإضاءة والتحكم (Lighting)</option>
-              <option value="Standards">الأكواد والمعايير (Standards)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="codeInput">الكود أو المرجع (اختياري)</label>
-            <input type="text" id="codeInput" placeholder="مثال: NEC 210.52 أو IEC 60364" />
-          </div>
-          <div class="field">
-            <label for="tagsInput">كلمات مفتاحية / Tags (اختياري)</label>
-            <input type="text" id="tagsInput" placeholder="مثال: socket, ups, conduit, emergency" />
-          </div>
-        </div>
-        <div class="field" style="margin-bottom: 12px;">
-          <label for="bodyInput">نص الملحوظة *</label>
-          <textarea id="bodyInput" required placeholder="اكتب التفاصيل الهندسية هنا..."></textarea>
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end;">
-          <button type="button" class="btn" id="cancelAddBtn">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ الملحوظة</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="controls">
-      <div class="search-row">
-        <input
-          type="search"
-          id="searchInput"
-          class="search-input"
-          placeholder="ابحث بأي كلمة: عنوان، كود، جهاز، كابل، ماسورة، تأريض، إضاءة..."
-        />
-        <span class="search-meta" id="resultsCount"></span>
-      </div>
-      <div class="categories" id="categoryBar">
-        <button class="cat-btn active" data-cat="ALL">الكل</button>
-        <button class="cat-btn" data-cat="Power">Power</button>
-        <button class="cat-btn" data-cat="Low Current">Low Current</button>
-        <button class="cat-btn" data-cat="Earthing">Earthing</button>
-        <button class="cat-btn" data-cat="Lighting">Lighting</button>
-        <button class="cat-btn" data-cat="Standards">Standards</button>
-      </div>
-    </section>
-
-    <main class="grid" id="notesGrid"></main>
-
-    <footer>
-      تم إعداد وتطوير هذه الصفحة بواسطة <strong>محمد عباده</strong> (Mohamed Abada) • الملاحظات المضافة تُحفظ محلياً في المتصفح.
-    </footer>
-  </div>
-
-  <script>
-    const STORAGE_KEY = "elec_notes_mohamed_abada_v2";
-
-    const defaultNotes = [
-      {
-        id: "n1",
-        title: "توزيع البرايز على الحوائط (NEC)",
-        category: "Power",
-        code: "NEC 210.52",
-        tags: ["socket", "receptacle", "1.8m", "3.65m", "wall"],
-        body: "في الفراغات التي تطبق القاعدة العامة بدون فرش مقيد: لا تبعد أي نقطة على الحائط أكثر من 1.8 م (6 ft) عن أقرب بريزة، والحد الأقصى بين مخرجين متتاليين حوالي 3.65 م (12 ft) مع مراعاة الأبواب والفتحات والفرش."
-      },
-      {
-        id: "n2",
-        title: "الفرق بين كابل CAT6A F/FTP و S/FTP",
-        category: "Low Current",
-        code: "ISO/IEC 11801",
-        tags: ["cat6a", "fftp", "sftp", "digital signage", "shield", "emi"],
-        body: "F/FTP (FFTP): فويل مستقل حول كل زوج + فويل خارجي عام. S/FTP: فويل مستقل حول كل زوج + شبكة مضفورة (Braid) خارجية. يُستخدم الشيلد في مسارات Digital Signage والداتا لتقليل EMI و Crosstalk بشرط تأريض الشيلد بشكل سليم."
-      },
-      {
-        id: "n3",
-        title: "تأريض وبوندنج لوحات LCP وغرف التيار الخفيف",
-        category: "Earthing",
-        code: "IEC 60364 / TIA-607",
-        tags: ["bonding", "tgb", "tmbg", "lcp", "earthing", "noise"],
-        body: "يجب أن تكون شبكة التأريض متكافئة الجهد (Equipotential Bonding). لا يُنصح بمد كابل بوندنج لمسافات طويلة من غرفة التيار الخفيف إلى لوحة LCP بعيدة؛ يُعتمد على PE المغذي للوحة أو أقرب بارة تأريض محلية لتجنب الهدر و Ground loops."
-      },
-      {
-        id: "n4",
-        title: "معدات PHE و Digital Signage في المستشفيات",
-        category: "Standards",
-        code: "MEP Coordination",
-        tags: ["phe", "digital signage", "hospital", "ups", "data", "ro"],
-        body: "PHE غالباً تشير إلى Public Health Engineering (المياه والصرف والطلمبات) وتحتاج تغذية وتحكم كهربائي. Digital Signage يحتاج مخرج باور (يفضل UPS/Emergency للإرشاد) ومخرج داتا RJ45 خلف الشاشة مع تنسيق الارتفاع."
-      }
-    ];
-
-    let notes = loadNotes();
-    let activeCategory = "ALL";
-    let searchQuery = "";
-
-    function loadNotes() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-      return [...defaultNotes];
-    }
-
-    function saveNotes() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    function normalizeText(str = "") {
-      return String(str)
-        .toLowerCase()
-        .replace(/[إأآا]/g, "ا")
-        .replace(/ى/g, "ي")
-        .replace(/ة/g, "ه")
-        .replace(/[\u064B-\u065F]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function matchesSearch(note, rawQuery) {
-      const normalizedQuery = normalizeText(rawQuery);
-      if (!normalizedQuery) return true;
-
-      const searchableBlob = normalizeText([
-        note.title,
-        note.category,
-        note.code || "",
-        Array.isArray(note.tags) ? note.tags.join(" ") : (note.tags || ""),
-        note.body
-      ].join(" "));
-
-      const tokens = normalizedQuery.split(" ");
-      return tokens.every((token) => searchableBlob.includes(token));
-    }
-
-    function escapeHtml(str = "") {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
-
-    function renderNotes() {
-      const grid = document.getElementById("notesGrid");
-      const countEl = document.getElementById("resultsCount");
-
-      const filtered = notes.filter((n) => {
-        const catMatch = activeCategory === "ALL" || n.category === activeCategory;
-        return catMatch && matchesSearch(n, searchQuery);
-      });
-
-      countEl.textContent = `عدد النتائج: ${filtered.length} من أصل ${notes.length}`;
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div class="empty">لا توجد ملحوظات مطابقة للبحث أو التصنيف الحالي. جرّب كلمة أخرى أو أضف ملحوظة جديدة.</div>`;
-        return;
-      }
-
-      grid.innerHTML = filtered.map((n) => {
-        const tagsArray = Array.isArray(n.tags)
-          ? n.tags
-          : String(n.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
-
-        return `
-          <article class="card">
-            <div>
-              <div class="card-top">
-                <span class="badge">${escapeHtml(n.category)}</span>
-                ${n.code ? `<span class="code-tag">${escapeHtml(n.code)}</span>` : ""}
-              </div>
-              <h3>${escapeHtml(n.title)}</h3>
-              <p class="card-body" style="margin-top: 8px;">${escapeHtml(n.body)}</p>
-              ${tagsArray.length ? `
-                <div class="card-tags">
-                  ${tagsArray.map((tag) => `<span class="mini-tag">#${escapeHtml(tag)}</span>`).join("")}
-                </div>
-              ` : ""}
-            </div>
-            <div class="card-footer">
-              <button class="btn copy-btn" data-copy="${escapeHtml(`${n.title}${n.code ? " (" + n.code + ")" : ""}\n${n.body}`)}">نسخ</button>
-              <button class="btn btn-danger delete-btn" data-id="${escapeHtml(n.id)}">حذف</button>
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      document.querySelectorAll(".copy-btn").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const text = btn.getAttribute("data-copy");
-          try {
-            await navigator.clipboard.writeText(text);
-            const old = btn.textContent;
-            btn.textContent = "تم النسخ";
-            setTimeout(() => (btn.textContent = old), 1200);
-          } catch (_) {
-            alert("تعذر النسخ تلقائياً");
-          }
-        });
-      });
-
-      document.querySelectorAll(".delete-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const id = btn.getAttribute("data-id");
-          notes = notes.filter((item) => item.id !== id);
-          saveNotes();
-          renderNotes();
-        });
-      });
-    }
-
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-      searchQuery = e.target.value;
-      renderNotes();
-    });
-
-    document.getElementById("categoryBar").addEventListener("click", (e) => {
-      const btn = e.target.closest(".cat-btn");
-      if (!btn) return;
-      document.querySelectorAll(".cat-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      activeCategory = btn.getAttribute("data-cat");
-      renderNotes();
-    });
-
-    const addPanel = document.getElementById("addPanel");
-    document.getElementById("toggleAddBtn").addEventListener("click", () => {
-      addPanel.classList.toggle("open");
-    });
-    document.getElementById("cancelAddBtn").addEventListener("click", () => {
-      addPanel.classList.remove("open");
-    });
-
-    document.getElementById("noteForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const title = document.getElementById("titleInput").value.trim();
-      const category = document.getElementById("categoryInput").value;
-      const code = document.getElementById("codeInput").value.trim();
-      const tags = document.getElementById("tagsInput").value.trim();
-      const body = document.getElementById("bodyInput").value.trim();
-      if (!title || !body) return;
-
-      notes.unshift({
-        id: "n_" + Date.now(),
-        title,
-        category,
-        code,
-        tags,
-        body
-      });
-
-      saveNotes();
-      e.target.reset();
-      addPanel.classList.remove("open");
-      renderNotes();
-    });
-
-    const themeBtn = document.getElementById("themeBtn");
-    themeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      themeBtn.textContent = document.body.classList.contains("light") ? "الوضع الليلي" : "الوضع النهاري";
-    });
-
-    renderNotes();
-  </script>
-</body>
-</html>
+        <button class="btn btn-primary" id="toggleAddBtn">+ إضافة ملح
